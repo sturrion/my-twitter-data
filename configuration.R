@@ -5,4 +5,6 @@ key <- ""
 secret <- ""
 
 token <- ""
-token_secret <- ""
+token.secret <- ""
+
+my.twitter.user <- ""
