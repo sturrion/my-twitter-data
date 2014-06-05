@@ -1,6 +1,7 @@
 
 source("code/configuration.R")
 source("code/twitter_functions.R")
+source("code/graph_functions.R")
 
 library(httr)
 library(plyr)

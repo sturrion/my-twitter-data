@@ -1,4 +1,18 @@
 ################################################################################
+# Function to check twitter status
+################################################################################
+get.status <- function(user.name, sign.oauth) {
+    request <- "https://api.twitter.com/1.1/application/rate_limit_status.json"
+    
+    response <- GET(request, sign.oauth)
+    
+    # Converting the json object to a data frame
+    status <- content(response)
+    
+    status
+}
+
+################################################################################
 # This function returns a list object with a variety of information about the 
 # user specified by the required user.name (twitter screen name) parameter.
 ################################################################################
@@ -43,9 +57,21 @@ get.followers <- function(user.name, sign.oauth) {
                        "&count=200&skip_status=true&include_user_entities=false")
     
     response <- GET(request, sign.oauth)
-    
     followers = content(response)
     followers.list <- followers[["users"]]
+    
+    while (followers[["next_cursor_str"]] != "0") {
+        request <- paste0("https://api.twitter.com/1.1/followers/list.json?cursor=",
+                          followers[["next_cursor_str"]]
+                          ,"&screen_name=", 
+                          user.name, 
+                          "&count=200&skip_status=true&include_user_entities=false")
+        
+        response <- GET(request, sign.oauth)
+        followers = content(response)
+        followers.list <- c(followers.list, followers[["users"]])
+        
+    } 
     
     followers.list
 }
@@ -84,6 +110,18 @@ get.friends <- function(user.name, sign.oauth) {
     friends = content(response)
     friends.list <- friends[["users"]]
     
+    while (friends[["next_cursor_str"]] != "0") {
+        request <- paste0("https://api.twitter.com/1.1/friends/list.json?cursor=",
+                          friends[["next_cursor_str"]]
+                          ,"&screen_name=", 
+                          user.name, 
+                          "&count=200&skip_status=true&include_user_entities=false")
+        
+        response <- GET(request, sign.oauth)
+        friends = content(response)
+        friends.list <- c(friends.list, friends[["users"]])
+    } 
+    
     friends.list
 }
 
@@ -106,50 +144,4 @@ get.friends.relationships <- function(user.name, sign.oauth) {
     friends.relationships
 }
 
-# This is from http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_(ggplot2)/
 
-# Multiple plot function
-#
-# ggplot objects can be passed in ..., or to plotlist (as a list of ggplot objects)
-# - cols:   Number of columns in layout
-# - layout: A matrix specifying the layout. If present, 'cols' is ignored.
-#
-# If the layout is something like matrix(c(1,2,3,3), nrow=2, byrow=TRUE),
-# then plot 1 will go in the upper left, 2 will go in the upper right, and
-# 3 will go all the way across the bottom.
-#
-multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
-    require(grid)
-    
-    # Make a list from the ... arguments and plotlist
-    plots <- c(list(...), plotlist)
-    
-    numPlots = length(plots)
-    
-    # If layout is NULL, then use 'cols' to determine layout
-    if (is.null(layout)) {
-        # Make the panel
-        # ncol: Number of columns of plots
-        # nrow: Number of rows needed, calculated from # of cols
-        layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
-                         ncol = cols, nrow = ceiling(numPlots/cols))
-    }
-    
-    if (numPlots==1) {
-        print(plots[[1]])
-        
-    } else {
-        # Set up the page
-        grid.newpage()
-        pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
-        
-        # Make each plot, in the correct location
-        for (i in 1:numPlots) {
-            # Get the i,j matrix positions of the regions that contain this subplot
-            matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
-            
-            print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
-                                            layout.pos.col = matchidx$col))
-        }
-    }
-}
