@@ -20,10 +20,10 @@ user.followers <- get.followers.relationships(my.twitter.user, sig)
 user.friends <- get.friends.relationships(my.twitter.user, sig)
 
 # Merge followers and friends
-relationships <- merge(user.followers, user.friends, all=TRUE)
+relationships <- merge(user.followers, user.friends, 
+                       all=TRUE)
 
 relationships[c("is.follower", "is.friend")][is.na(relationships[c("is.follower", "is.friend")])] <- FALSE
-
 
 # plotting
 library(ggplot2) 

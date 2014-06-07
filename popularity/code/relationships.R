@@ -43,7 +43,7 @@ rm(relationships, rows.to.add)
 library(ggplot2) 
 library(scales)
 
-# followers data
+# relationships graph
 g <- ggplot(data.relationships, aes(x=log10(followers.count), 
                                     y=log10(friends.count),
                                     color=type))

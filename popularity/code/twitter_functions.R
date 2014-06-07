@@ -1,7 +1,7 @@
 ################################################################################
 # Function to check twitter status
 ################################################################################
-get.status <- function(user.name, sign.oauth) {
+get.status <- function(sign.oauth) {
     request <- "https://api.twitter.com/1.1/application/rate_limit_status.json"
     
     response <- GET(request, sign.oauth)
@@ -60,7 +60,16 @@ get.followers <- function(user.name, sign.oauth) {
     followers = content(response)
     followers.list <- followers[["users"]]
     
-    while (followers[["next_cursor_str"]] != "0") {
+    print(followers[["next_cursor_str"]])
+    
+    if (followers[["next_cursor_str"]] != 0) {
+        status <- get.status(sign.oauth)
+        remaining <- paste0("status$resources$followers$`/followers/list`$remaining",
+                            status$resources$followers$`/followers/list`$remaining)
+        print(remaining)
+    }
+    
+    while (!is.null(followers[["next_cursor_str"]]) && followers[["next_cursor_str"]] != "0") {
         request <- paste0("https://api.twitter.com/1.1/followers/list.json?cursor=",
                           followers[["next_cursor_str"]]
                           ,"&screen_name=", 
@@ -71,6 +80,8 @@ get.followers <- function(user.name, sign.oauth) {
         followers = content(response)
         followers.list <- c(followers.list, followers[["users"]])
         
+        print(followers[["next_cursor_str"]])
+        Sys.sleep(60)
     } 
     
     followers.list
@@ -106,11 +117,19 @@ get.friends <- function(user.name, sign.oauth) {
                       "&count=200&skip_status=true&include_user_entities=false")
     
     response <- GET(request, sign.oauth)
-    
     friends = content(response)
     friends.list <- friends[["users"]]
     
-    while (friends[["next_cursor_str"]] != "0") {
+    print(friends[["next_cursor_str"]])
+    
+    if (friends[["next_cursor_str"]] != 0) {
+        status <- get.status(sign.oauth)
+        remaining <- paste0("status$resources$friends$`/friends/list`$remaining",
+                        status$resources$friends$`/friends/list`$remaining)
+        print(remaining)
+    }
+    
+    while (!is.null(friends["next_cursor_str"] ) && friends[["next_cursor_str"]] != "0") {
         request <- paste0("https://api.twitter.com/1.1/friends/list.json?cursor=",
                           friends[["next_cursor_str"]]
                           ,"&screen_name=", 
@@ -120,6 +139,9 @@ get.friends <- function(user.name, sign.oauth) {
         response <- GET(request, sign.oauth)
         friends = content(response)
         friends.list <- c(friends.list, friends[["users"]])
+        
+        print(friends[["next_cursor_str"]])
+        Sys.sleep(60)
     } 
     
     friends.list
@@ -143,5 +165,4 @@ get.friends.relationships <- function(user.name, sign.oauth) {
     friends.relationships$is.friend=TRUE
     friends.relationships
 }
-
 
