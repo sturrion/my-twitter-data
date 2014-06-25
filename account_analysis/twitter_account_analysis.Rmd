@@ -1,7 +1,7 @@
 Twitter
 ========================================================
 
-I can't follow more than 2000 people. I need follow people who follow back. And I need people with many followers. So, if the retweet, my tweets will spread faster.
+I can't follow more than 2000 people. I need follow people who follow back. And I need people with many followers. So, if they retweet, my tweets will spread faster.
 
 I'm going to explore some data.
 

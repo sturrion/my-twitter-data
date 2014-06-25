@@ -1,7 +1,7 @@
 Twitter
 ========================================================
 
-I can't follow more than 2000 people. I need follow people who follow back. And I need people with many followers. So, if the retweet, my tweets will spread faster.
+I can't follow more than 2000 people. I need follow people who follow back. And I need people with many followers. So, if they retweet, my tweets will spread faster.
 
 I'm going to explore some data.
 
@@ -196,7 +196,7 @@ quantile(followers$followers.count, prob=c(0.1,0.25,0.5,0.75,0.9,0.95,0.99))
 
 ```
 ##     10%     25%     50%     75%     90%     95%     99% 
-##    86.6   293.0   866.0  2004.0  5146.2 10739.3 38234.0
+##    86.0   291.5   866.0  2003.5  5109.8 10531.8 38238.2
 ```
 
 ```r
@@ -205,7 +205,7 @@ quantile(friends$followers.count, prob=c(0.1,0.25,0.5,0.75,0.9,0.95,0.99))
 
 ```
 ##     10%     25%     50%     75%     90%     95%     99% 
-##   136.6   386.0  1094.0  2080.2  4497.0  9541.9 37875.2
+##   136.3   386.0  1094.5  2082.0  4497.7  9544.5 37880.9
 ```
 
 Finally, some graphs.
