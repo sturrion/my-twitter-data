@@ -1,6 +1,11 @@
 My twitter project
 ==================
 
+## Account analysis
+
+Following this report you can analyse your twitter account.
+
+
 ## Popularity
 
 Create your own twitter application on https://dev.twitter.com and complete with your data the parameters on configuration.R.

@@ -196,7 +196,7 @@ quantile(followers$followers.count, prob=c(0.1,0.25,0.5,0.75,0.9,0.95,0.99))
 
 ```
 ##     10%     25%     50%     75%     90%     95%     99% 
-##    86.0   289.5   840.0  1939.0  4991.8 10528.1 37830.9
+##    86.6   293.0   866.0  2004.0  5146.2 10739.3 38234.0
 ```
 
 ```r
@@ -205,7 +205,7 @@ quantile(friends$followers.count, prob=c(0.1,0.25,0.5,0.75,0.9,0.95,0.99))
 
 ```
 ##     10%     25%     50%     75%     90%     95%     99% 
-##   114.6   355.5  1025.0  1998.5  4370.2  9046.8 38027.7
+##   136.6   386.0  1094.0  2080.2  4497.0  9541.9 37875.2
 ```
 
 Finally, some graphs.
@@ -240,10 +240,10 @@ g
 
 ![plot of chunk unnamed-chunk-13](figure/unnamed-chunk-13.png) 
 
-Data until the 75th percentile.
+Data until the 95th percentile.
 
 ```r
-g <- ggplot(data.relationships[data.relationships$followers.count < quantile(data.relationships$followers.count, prob=0.75) & data.relationships$friends.count < quantile(data.relationships$friends.count, prob=0.75),], 
+g <- ggplot(data.relationships[data.relationships$followers.count < quantile(data.relationships$followers.count, prob=0.95) & data.relationships$friends.count < quantile(data.relationships$friends.count, prob=0.95),], 
             aes(x=followers.count, 
                 y=friends.count,
                 color=type))
@@ -274,7 +274,10 @@ xtable(data.relationships[data.relationships$type %in% c("friend","both") &
 
 
 ```r
-hist(data.relationships[data.relationships$followers.count < quantile(data.relationships$followers.count, prob=0.75),"followers.count"])
+m <- ggplot(data.relationships[data.relationships$followers.count < quantile(data.relationships$followers.count, prob=0.95),], aes(x=followers.count, fill=type))
+m <- m + facet_wrap( ~ type, ncol=1)
+m <- m + geom_histogram(binwidth = 50)
+m
 ```
 
 ![plot of chunk unnamed-chunk-17](figure/unnamed-chunk-17.png) 
