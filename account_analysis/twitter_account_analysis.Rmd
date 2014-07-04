@@ -23,7 +23,6 @@ twitter.user <- "xxxxxxxxx"
 library(httr)
 library(plyr)
 library(ggplot2) 
-library(xtable)
 
 # Do not use scientific notation
 options(scipen=999)
@@ -175,9 +174,9 @@ for(name in duplicated) {
 
 Now, we summarise some data.
 ```{r results="hide"}
-xtable(summary(followers))
-xtable(summary(friends))
-xtable(summary(data.relationships))
+summary(followers)
+summary(friends)
+summary(data.relationships)
 ```
 
 ```{r}
@@ -213,7 +212,6 @@ g
 
 Data until the 95th percentile.
 ```{r fig.width=11, fig.height=10}
-
 g <- ggplot(data.relationships[data.relationships$followers.count < quantile(data.relationships$followers.count, prob=0.95) & data.relationships$friends.count < quantile(data.relationships$friends.count, prob=0.95),], 
             aes(x=followers.count, 
                 y=friends.count,
@@ -229,14 +227,14 @@ g
 
 I want to know who are only followers with more than 1000 followers.
 ```{r results="hide"} 
-xtable(data.relationships[data.relationships$type=="follower" &
-                       data.relationships$followers.count>=1000,])
+data.relationships[data.relationships$type=="follower" &
+                       data.relationships$followers.count>=1000,]
 ```
 
 or friends with less than 100 followers.
 ```{r results="hide"} 
-xtable(data.relationships[data.relationships$type %in% c("friend","both") &
-                       data.relationships$followers.count < 100,])
+data.relationships[data.relationships$type %in% c("friend","both") &
+                       data.relationships$followers.count < 100,]
 ```
 
 ```{r fig.width=11, fig.height=10}
